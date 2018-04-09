@@ -23,8 +23,8 @@ public class Recherche {
     // Connexion conece;
      //conece = new Connexion("sl152003", "attelage1OO."," sl152003-rw","4muIKuY8" );
         
-        
-      String requete ="SELECT * FROM CHAMBRE ";
+        String mutuelle="LMDE";
+      String requete ="SELECT nom,prenom FROM MALADE WHERE mutuelle='"+mutuelle+ "'";
                    conloc.ajouterRequete(requete);
                  
                        ArrayList<String> liste;

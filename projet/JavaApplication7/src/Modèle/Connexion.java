@@ -9,10 +9,14 @@ package Modèle;
  * Librairies importées
  */
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -238,6 +242,7 @@ public class Connexion extends java.lang.Object{
                    int oldchir=0;
                    int oldcar=0;
                   while (rset.next()) {
+                      
                       switch(rset.getString("CODE_SERVICE"))
                       {
                           case "REA":
@@ -275,7 +280,7 @@ JFreeChart chart; // URLs?
 "Nombre de lit", // range axis label
 
                 data,
-               PlotOrientation.HORIZONTAL, // orientation
+               PlotOrientation.VERTICAL, // orientation
 false, // include legend
 true, // tooltips?
 false // URLs?
@@ -284,4 +289,106 @@ ChartFrame frame = new ChartFrame("Test", chart);
 frame.pack();
 frame.setVisible(true);
     }
+      
+      
+        public void afficherCamembert1() throws SQLException
+    {
+        String requete ="SELECT * FROM DOCTEUR";
+         rset = stmt.executeQuery(requete);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+   
+         DefaultPieDataset data = new DefaultPieDataset();
+      
+                ajouterRequete(requete);
+              
+                   int cptTraum=0;
+        
+                   int cptCar=0;
+                   int cptPneu=0;
+                   int cptRadio=0;
+                   int cptAnes=0;
+                   int cptOrtho=0;
+                  while (rset.next()) {
+                      
+                      switch(rset.getString("specialite"))
+                      {
+                          case "Traumatologue":
+                               
+                              cptTraum++;
+                               
+                                break;
+                                
+                                        case "Cardiologue":
+                               cptCar++;
+                                break;
+                                        case "Pneumologue":
+                                            cptPneu++;
+                                            break;                       
+                                
+                               case "Radiologue":
+                                            cptRadio++;
+                                            break;     
+                                            
+                                                         case "Orthopediste":
+                                            cptOrtho++;
+                                            break;     
+                                                         case "Anesthesiste":
+                                            cptAnes++;
+                                            break;     
+                                }
+                  
+                  }
+              
+
+                  data.setValue("Traumatologue",cptTraum);
+                   data.setValue("Cardiologue",cptCar);
+                   data.setValue("Pneumologue",cptPneu);
+                   data.setValue("Radiologue",cptRadio);
+                   data.setValue("Orthopediste",cptOrtho);
+                   data.setValue("Anesthesiste",cptAnes);
+                   
+                  
+        //        DefaultCategoryDataset mydataset=new DefaultCategoryDataset();        
+   // DefaultPieDataset dataset = new DefaultPieDataset();
+    /*dataset.setValue("Category 1", 43.2);
+dataset.setValue("Category 2", 27.9);
+dataset.setValue("Category 3", 79.5);*/
+JFreeChart chart= ChartFactory.createPieChart(
+        
+              "Camembert selon la spécialité des médecins", // chart title
+                data,
+          
+false, // include legend
+true, // tooltips?
+false // URLs?
+);
+PiePlot plot = (PiePlot) chart.getPlot();
+
+plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}={1} ({2})"));
+
+
+//PiePlot3D plot3 = (PiePlot3D) chart.getPlot();
+plot.setExplodePercent("Cardiologue",0.30);
+// plot3.setForegroundAlpha(0.7f);
+ChartFrame frame = new ChartFrame("Test", chart);
+
+frame.pack();
+frame.setVisible(true);
+    }
+
+      
+      public Connection getConnexion(){
+          return this.conn;
+      }
+      
+      
+      public ResultSet getResultSet(){
+          return this.rset;
+      }
+      
+       public Statement getStatement(){
+          return this.stmt;
+      }
 }

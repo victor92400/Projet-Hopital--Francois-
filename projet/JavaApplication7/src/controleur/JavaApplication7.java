@@ -13,6 +13,7 @@ import Modèle.Connexion;
 import Modèle.Recherche;
 import Modèle.Statistiques;
 import vue.AffichageConsole;
+import vue.AffichageGraphique;
 
 /**
  *
@@ -80,9 +81,14 @@ public class JavaApplication7 {
         liste=conloc.remplirChampsRequete(requete);
          AffichageConsole interfaceC=new AffichageConsole();
          interfaceC.affichageRequete(liste);*/
+             
+             AffichageGraphique testAffich=new AffichageGraphique();
+             testAffich.affichageMenu();
          Recherche rech=new Recherche();
          rech.rechercher();
          conloc.afficherCamembert2();
+         conloc.afficherCamembert1();
+         
          /*Statistiques stat=new Statistiques();
          stat.aficherCamembert();*/
          

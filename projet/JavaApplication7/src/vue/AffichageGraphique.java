@@ -12,5 +12,10 @@ import java.util.ArrayList;
  * @author solen
  */
 public class AffichageGraphique {
+    
+    public void affichageMenu()
+    {
+        Fenetre fenetre1=new Fenetre();
+    }
         
 }
