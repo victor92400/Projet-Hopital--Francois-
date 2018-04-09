@@ -82,8 +82,9 @@ public class JavaApplication7 {
          interfaceC.affichageRequete(liste);*/
          Recherche rech=new Recherche();
          rech.rechercher();
-         Statistiques stat=new Statistiques();
-         stat.aficherCamembert();
+         conloc.afficherCamembert2();
+         /*Statistiques stat=new Statistiques();
+         stat.aficherCamembert();*/
          
         
                   //conloc.executeUpdate(requete);

@@ -10,6 +10,10 @@ package Modèle;
  */
 import java.sql.*;
 import java.util.ArrayList;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  * 
@@ -213,5 +217,38 @@ public class Connexion extends java.lang.Object{
     public ArrayList<String> getListe()
     {
         return requetes;
+    }
+    
+      public void afficherCamembert2() throws SQLException
+    {
+        String requete ="SELECT * FROM CHAMBRE ";
+         rset = stmt.executeQuery(requete);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+           DefaultPieDataset my_pie_chart_dataset = new DefaultPieDataset();
+      //  String requete ="SELECT nb_lits FROM CHAMBRE ";
+                ajouterRequete(requete);
+                   
+                   
+                  while (rset.next()) {
+                                String state = rset.getString("CODE_SERVICE");
+                                int success_rate = rset.getInt("NB_LITS");
+                                my_pie_chart_dataset.setValue(state, success_rate); //Convert data source from table to Pie Chart Data Source                               
+                                }
+                   
+   // DefaultPieDataset dataset = new DefaultPieDataset();
+    /*dataset.setValue("Category 1", 43.2);
+dataset.setValue("Category 2", 27.9);
+dataset.setValue("Category 3", 79.5);*/
+JFreeChart chart = ChartFactory.createPieChart(
+"Sample Pie Chart",
+ my_pie_chart_dataset,
+true, // legend?
+true, // tooltips?
+false); // URLs?
+ChartFrame frame = new ChartFrame("Test", chart);
+frame.pack();
+frame.setVisible(true);
     }
 }

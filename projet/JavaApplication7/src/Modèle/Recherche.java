@@ -35,4 +35,6 @@ public class Recherche {
          interfaceC.affichageRequete(liste);
     }
     
+    
+    
 }

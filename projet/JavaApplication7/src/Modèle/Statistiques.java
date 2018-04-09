@@ -5,6 +5,10 @@
  */
 package Modèle;
 
+import java.sql.*;
+import java.util.ArrayList;
+
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.jfree.chart.ChartFactory;
@@ -38,7 +42,7 @@ frame.setVisible(true);
     }
     
     
-    /*  public void afficherCamembert2(Connexion conloc)
+     public void afficherCamembert2(Connexion conloc)
     {
            DefaultPieDataset my_pie_chart_dataset = new DefaultPieDataset();
         String requete ="SELECT nb_lits FROM CHAMBRE ";
@@ -65,7 +69,10 @@ ChartFrame frame = new ChartFrame("Test", chart);
 frame.pack();
 frame.setVisible(true);
     }
-    */
+    
+     
+     
+     
     private PieDataset readData() {
 JDBCPieDataset data = null;
 String url = "jdbc:postgresql://localhost";
