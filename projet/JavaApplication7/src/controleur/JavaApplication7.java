@@ -39,6 +39,12 @@ public class JavaApplication7 {
      * @throws java.lang.ClassNotFoundException
      */
     public static void main(java.lang.String[] args) throws ClassNotFoundException, SQLException  {
+        
+        
+        
+        
+        
+        ///Bonjour j'ai bien été changé
            
                      //   Connection con=null;
                         // Connexion  conece;
