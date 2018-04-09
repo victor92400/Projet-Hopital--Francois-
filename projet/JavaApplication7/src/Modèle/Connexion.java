@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 /**
@@ -226,27 +228,58 @@ public class Connexion extends java.lang.Object{
 
         // récupération du résultat de l'ordre
         rsetMeta = rset.getMetaData();
-           DefaultPieDataset my_pie_chart_dataset = new DefaultPieDataset();
+       DefaultCategoryDataset data=new DefaultCategoryDataset();
+       //   DefaultPieDataset my_pie_chart_dataset = new DefaultPieDataset();
       //  String requete ="SELECT nb_lits FROM CHAMBRE ";
                 ajouterRequete(requete);
                    
-                   
+                   int success_rate=0;
+                   int oldrea=0;
+                   int oldchir=0;
+                   int oldcar=0;
                   while (rset.next()) {
+                      switch(rset.getString("CODE_SERVICE"))
+                      {
+                          case "REA":
                                 String state = rset.getString("CODE_SERVICE");
-                                int success_rate = rset.getInt("NB_LITS");
-                                my_pie_chart_dataset.setValue(state, success_rate); //Convert data source from table to Pie Chart Data Source                               
+                                 success_rate = rset.getInt("NB_LITS")+oldrea;
+                                 oldrea=success_rate;
+                                data.setValue(success_rate,"s1",state);
+                                break;
+                                
+                                         case "CAR":
+                                String state2 = rset.getString("CODE_SERVICE");
+                                 success_rate = rset.getInt("NB_LITS")+oldcar;
+                                 oldcar=success_rate;
+                                data.setValue(success_rate,"s1",state2);
+                                break;
+                                         case "CHG":
+                                String state3 = rset.getString("CODE_SERVICE");
+                                 success_rate = rset.getInt("NB_LITS")+oldchir;
+                                 oldchir=success_rate;
+                                data.setValue(success_rate,"s1",state3);
+                                break;
+                           
+                                //my_pie_chart_dataset.setValue(state, success_rate); //Convert data source from table to Pie Chart Data Source                               
                                 }
-                   
+                  }
+        //        DefaultCategoryDataset mydataset=new DefaultCategoryDataset();        
    // DefaultPieDataset dataset = new DefaultPieDataset();
     /*dataset.setValue("Category 1", 43.2);
 dataset.setValue("Category 2", 27.9);
 dataset.setValue("Category 3", 79.5);*/
-JFreeChart chart = ChartFactory.createPieChart(
-"Sample Pie Chart",
- my_pie_chart_dataset,
-true, // legend?
+JFreeChart chart; // URLs?
+        chart = ChartFactory.createBarChart(
+              "Nombre de lit par Secteur", // chart title
+"Category", // domain axis label
+"Nombre de lit", // range axis label
+
+                data,
+               PlotOrientation.HORIZONTAL, // orientation
+false, // include legend
 true, // tooltips?
-false); // URLs?
+false // URLs?
+);
 ChartFrame frame = new ChartFrame("Test", chart);
 frame.pack();
 frame.setVisible(true);
