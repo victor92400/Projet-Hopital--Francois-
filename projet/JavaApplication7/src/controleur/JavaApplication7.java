@@ -86,8 +86,8 @@ public class JavaApplication7 {
              testAffich.affichageMenu();
          Recherche rech=new Recherche();
          rech.rechercher();
-         conloc.afficherCamembert2();
-         conloc.afficherCamembert1();
+       //  conloc.afficherCamembert2();
+         //conloc.afficherCamembert1();
          
          /*Statistiques stat=new Statistiques();
          stat.aficherCamembert();*/
