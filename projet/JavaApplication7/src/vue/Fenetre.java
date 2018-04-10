@@ -53,7 +53,7 @@ public class Fenetre extends JFrame implements ActionListener{
     bouton1.addActionListener(this);
     bouton2= new JButton("Mise à jour de la base de données");
    bouton2.addActionListener(this);
-   bouton3 = new JButton("Mise à jour de la base de données");
+   bouton3 = new JButton("Reporting");
     bouton3.addActionListener(this);
       pan.add(bouton1);
     pan.add(bouton2);
@@ -91,7 +91,7 @@ public void menuReporting()
     bouton4.addActionListener(this);
     bouton5= new JButton("Camembert de la spécialité des médecins");
    bouton5.addActionListener(this);
-   bouton6 = new JButton("A definir sous peu ..."); 
+   bouton6 = new JButton("Charte du nombre de malade par médecin"); 
    bouton6.addActionListener(this);
    
       pan.add(bouton4);
@@ -165,10 +165,14 @@ public void menuRecherche()
             Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
         }
 }
-         if  (source==bouton7)
+         if  (source==bouton6)
         {
-            System.out.println("1er !");
-         
+
+            try {
+            conloc.afficherBarMedecin();
+        } catch (SQLException ex) {
+            Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+        }         
            
       }
         else if (source==bouton8)

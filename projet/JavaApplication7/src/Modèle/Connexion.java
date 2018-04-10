@@ -8,16 +8,22 @@ package Modèle;
  * 
  * Librairies importées
  */
+import org.jfree.chart.title.LegendTitle;   
+import org.jfree.chart.title.TextTitle;  
 import java.sql.*;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.SpiderWebPlot;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -268,11 +274,7 @@ public class Connexion extends java.lang.Object{
                                 //my_pie_chart_dataset.setValue(state, success_rate); //Convert data source from table to Pie Chart Data Source                               
                                 }
                   }
-        //        DefaultCategoryDataset mydataset=new DefaultCategoryDataset();        
-   // DefaultPieDataset dataset = new DefaultPieDataset();
-    /*dataset.setValue("Category 1", 43.2);
-dataset.setValue("Category 2", 27.9);
-dataset.setValue("Category 3", 79.5);*/
+  
 JFreeChart chart; // URLs?
         chart = ChartFactory.createBarChart(
               "Nombre de lit par Secteur", // chart title
@@ -349,12 +351,6 @@ frame.setVisible(true);
                    data.setValue("Orthopediste",cptOrtho);
                    data.setValue("Anesthesiste",cptAnes);
                    
-                  
-        //        DefaultCategoryDataset mydataset=new DefaultCategoryDataset();        
-   // DefaultPieDataset dataset = new DefaultPieDataset();
-    /*dataset.setValue("Category 1", 43.2);
-dataset.setValue("Category 2", 27.9);
-dataset.setValue("Category 3", 79.5);*/
 JFreeChart chart= ChartFactory.createPieChart(
         
               "Camembert selon la spécialité des médecins", // chart title
@@ -374,6 +370,79 @@ plot.setExplodePercent("Cardiologue",0.30);
 // plot3.setForegroundAlpha(0.7f);
 ChartFrame frame = new ChartFrame("Test", chart);
 
+frame.pack();
+frame.setVisible(true);
+    }
+        
+         public void afficherBarMedecin () throws SQLException
+    {
+        String requete ="SELECT * FROM SOIGNE ";
+         rset = stmt.executeQuery(requete);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+        //CategoryDataset categorydataset = createCategoryDataset(displayBy, configuration, null);
+       // SpiderWebPlot data= new SpiderWebPlot();
+                DefaultCategoryDataset data = new DefaultCategoryDataset(); 
+        //PolarLineChartExample example = new PolarLineChartExample("Gantt Chart Example");
+       //   DefaultPieDataset my_pie_chart_dataset = new DefaultPieDataset();
+      //  String requete ="SELECT nb_lits FROM CHAMBRE ";
+                ajouterRequete(requete);
+                
+                   int cpt4=0;
+                   int cpt7=0;
+                   int cpt8=0;
+                     int cpt10=0;
+                   int cpt19=0;
+                   int cpt24=0;
+                  while (rset.next()) {
+                      
+                      switch(rset.getString("NO_DOCTEUR"))
+                      {
+                          case "4":
+                               
+                              cpt4++;
+                               
+                                break;
+                                
+                                        case "7":
+                               cpt7++;
+                                break;
+                                        case "8":
+                                            cpt8++;
+                                            break;                       
+                                
+                               case "10":
+                                            cpt10++;
+                                            break;     
+                                            
+                                                         case "19":
+                                            cpt19++;
+                                            break;     
+                                                         case "24":
+                                            cpt24++;
+                                            break;     
+                                //my_pie_chart_dataset.setValue(state, success_rate); //Convert data source from table to Pie Chart Data Source                               
+                                }
+                  }
+                        data.addValue(cpt4,"s1","4");
+                   data.setValue(cpt7,"s1","7");
+                   data.setValue(cpt8,"s1","8");
+                   data.setValue(cpt10,"s1","10");
+                   data.setValue(cpt19,"s1","19");
+                   data.setValue(cpt24,"s1","24");
+                   
+         SpiderWebPlot plot = new SpiderWebPlot(data); 
+                   plot.setWebFilled(true);
+        plot.setInteriorGap(0.40);
+
+plot.setLabelGenerator(new StandardCategoryItemLabelGenerator("{0}={1} ({2}", NumberFormat.getInstance()));
+//plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}={1} ({2})"));
+
+   JFreeChart jfreechart = new JFreeChart("Nombre de patients par médecin",TextTitle.DEFAULT_FONT,plot, false);   
+
+
+ChartFrame frame = new ChartFrame("Test", jfreechart);
 frame.pack();
 frame.setVisible(true);
     }
