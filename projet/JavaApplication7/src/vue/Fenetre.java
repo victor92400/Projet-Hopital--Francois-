@@ -20,12 +20,16 @@ import java.util.logging.Logger;
 
 public class Fenetre extends JFrame implements ActionListener{
   private JPanel pan;
+  private JButton boutonMenu;
   private JButton bouton1; 
     private JButton bouton2;
       private JButton bouton3;
        private JButton bouton4; 
     private JButton bouton5;
       private JButton bouton6;
+             private JButton bouton7; 
+    private JButton bouton8;
+      private JButton bouton9;
       private int choix;
               private Connexion conloc;
               
@@ -80,6 +84,8 @@ public void menuReporting()
     this.setTitle("MenuReporting");
    
     //Ajout du bouton à notre content pane
+     boutonMenu=new JButton("Retour au menu principal"); 
+  boutonMenu.addActionListener(this);
    
  bouton4=new JButton("Charte du nombre de lits par services");
     bouton4.addActionListener(this);
@@ -91,6 +97,31 @@ public void menuReporting()
       pan.add(bouton4);
     pan.add(bouton5);
     pan.add(bouton6);
+    pan.add(boutonMenu);
+     this.setContentPane(pan);
+    this.setVisible(true);
+}
+
+
+public void menuRecherche()
+{
+     pan= new JPanel();
+    this.setTitle("MenuJava");
+   
+    //Ajout du bouton à notre content pane
+  boutonMenu=new JButton("Retour au menu principal"); 
+  boutonMenu.addActionListener(this);
+ bouton7=new JButton("REQUETE DE TYPE 1");
+    bouton7.addActionListener(this);
+    bouton8= new JButton("REQUETE DE TYPE 2");
+   bouton8.addActionListener(this);
+   bouton9 = new JButton("REQUETE DE TYPE 3"); 
+   bouton9.addActionListener(this);
+   
+      pan.add(bouton7);
+    pan.add(bouton8);
+    pan.add(bouton9);
+    pan.add(boutonMenu);
      this.setContentPane(pan);
     this.setVisible(true);
 }
@@ -102,8 +133,7 @@ public void menuReporting()
         if  (source==bouton1)
         {
             System.out.println("1er !");
-            choix=1;
-           
+   menuRecherche();           
       }
         else if (source==bouton2)
         {
@@ -135,5 +165,26 @@ public void menuReporting()
             Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
         }
 }
+         if  (source==bouton7)
+        {
+            System.out.println("1er !");
+         
+           
+      }
+        else if (source==bouton8)
+        {
+            System.out.println("2eme !");
+            choix=2;
+        
+        }
+        else if (source==bouton9)
+        {
+            choix=3;
+           
+        }
+        else if(source==boutonMenu)
+        {
+            menu();
+        }
 }
 }
