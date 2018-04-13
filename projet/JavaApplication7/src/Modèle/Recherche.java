@@ -11,11 +11,18 @@ import controleur.JavaApplication7;
 import Modèle.Connexion;
 import Modèle.Recherche;
 import java.sql.SQLException;
+import vue.FenetreJp;
 /**
  *
  * @author solen
  */
 public class Recherche {
+    
+     private FenetreJp fen=new FenetreJp();
+    public Recherche() throws SQLException, ClassNotFoundException
+    {
+          
+    }
     
     public void rechercher() throws SQLException, ClassNotFoundException{
       Connexion conloc;
@@ -30,9 +37,11 @@ public class Recherche {
                        ArrayList<String> liste;
         liste = new ArrayList<String>();
        liste=conloc.remplirChampsRequete(requete);
-      //  conloc.remplirChampsRequete(requete);
-         AffichageConsole interfaceC=new AffichageConsole();
-         interfaceC.affichageRequete(liste);
+         //AffichageConsole interfaceC=new AffichageConsole();
+         //interfaceC.affichageRequete(liste);
+      
+        
+
     }
     
     

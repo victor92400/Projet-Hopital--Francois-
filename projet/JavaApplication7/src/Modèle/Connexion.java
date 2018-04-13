@@ -147,7 +147,7 @@ public class Connexion extends java.lang.Object{
      * @return
      * @throws java.sql.SQLException
      */
-    public java.util.ArrayList remplirChampsTable(java.lang.String table) throws java.sql.SQLException {
+   public java.util.ArrayList remplirChampsTable(java.lang.String table) throws java.sql.SQLException {
         // récupération de l'ordre de la requete
         rset = stmt.executeQuery("select * from " + table);
 
@@ -377,6 +377,7 @@ frame.setVisible(true);
          public void afficherBarMedecin () throws SQLException
     {
         String requete ="SELECT * FROM SOIGNE ";
+        String requete2="SELECT * FROM DOCTEUR";
          rset = stmt.executeQuery(requete);
 
         // récupération du résultat de l'ordre
@@ -422,15 +423,15 @@ frame.setVisible(true);
                                                          case "24":
                                             cpt24++;
                                             break;     
-                                //my_pie_chart_dataset.setValue(state, success_rate); //Convert data source from table to Pie Chart Data Source                               
+                                  
                                 }
                   }
-                        data.addValue(cpt4,"s1","4");
-                   data.setValue(cpt7,"s1","7");
-                   data.setValue(cpt8,"s1","8");
-                   data.setValue(cpt10,"s1","10");
-                   data.setValue(cpt19,"s1","19");
-                   data.setValue(cpt24,"s1","24");
+                        data.addValue(cpt4,"s1","Medecin n°4");
+                   data.setValue(cpt7,"s1","Medecin n°7");
+                   data.setValue(cpt8,"s1","Medecin n°8");
+                   data.setValue(cpt10,"s1","Medecin n°10");
+                   data.setValue(cpt19,"s1","Medecin n°19");
+                   data.setValue(cpt24,"s1","Medecin n°24");
                    
          SpiderWebPlot plot = new SpiderWebPlot(data); 
                    plot.setWebFilled(true);

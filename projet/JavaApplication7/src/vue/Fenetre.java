@@ -6,6 +6,7 @@
 package vue;
 
 import Modèle.Connexion;
+import Modèle.Recherche;
 /**
  *
  * @author solen
@@ -132,7 +133,16 @@ public void menuRecherche()
         
         if  (source==bouton1)
         {
-            System.out.println("1er !");
+                 Recherche rech;
+        try {
+            rech = new Recherche();
+             rech.rechercher();
+        } catch (SQLException ex) {
+            Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
    menuRecherche();           
       }
         else if (source==bouton2)

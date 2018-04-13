@@ -14,6 +14,7 @@ import Modèle.Recherche;
 import Modèle.Statistiques;
 import vue.AffichageConsole;
 import vue.AffichageGraphique;
+import vue.FenetreJp;
 
 /**
  *
@@ -84,8 +85,12 @@ public class JavaApplication7 {
              
              AffichageGraphique testAffich=new AffichageGraphique();
              testAffich.affichageMenu();
-         Recherche rech=new Recherche();
-         rech.rechercher();
+   
+      
+       
+         //fen.remplirTables();
+         //fen.remplirRequetes();
+        // fen.afficherRequetes();
        //  conloc.afficherCamembert2();
          //conloc.afficherCamembert1();
          
