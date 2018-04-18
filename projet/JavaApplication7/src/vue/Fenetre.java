@@ -6,6 +6,7 @@
 package vue;
 
 import Modèle.Connexion;
+import Modèle.MiseAJour;
 import Modèle.Recherche;
 /**
  *
@@ -147,8 +148,14 @@ public void menuRecherche()
       }
         else if (source==bouton2)
         {
-            System.out.println("2eme !");
+        try {
+            MiseAJour maj= new MiseAJour();
             choix=2;
+        } catch (SQLException ex) {
+            Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         }
         else if (source==bouton3)

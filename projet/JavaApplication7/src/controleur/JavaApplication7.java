@@ -51,7 +51,7 @@ public class JavaApplication7 {
                      //   Connection con=null;
                         // Connexion  conece;
                    
-                     JavaApplication7 test= new JavaApplication7();
+                 //    JavaApplication7 test= new JavaApplication7();
                      /*
                       Statement statement = null;
     ResultSet resultat = null;
