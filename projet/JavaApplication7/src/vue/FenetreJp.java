@@ -223,6 +223,25 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
     /**
      * Méthode privée qui initialise la liste des requetes de selection
      */
+    public void remplirRequetes() {
+     maconnexion.ajouterRequete("SELECT nom, prenom FROM malade WHERE mutuelle='MAAF';"); //R1
+     maconnexion.ajouterRequete("SELECT nom, prenom FROM employe WHERE numero IN (SELECT numero FROM infirmier WHERE rotation='NUIT')"); //R2
+     maconnexion.ajouterRequete("SELECT service.nom AS serv, batiment, prenom, employe.nom AS noom, specialite FROM service INNER JOIN employe ON service.directeur = employe.numero INNER JOIN docteur ON  docteur.numero = employe.numero"); //R3
+     maconnexion.ajouterRequete("SELECT nom, prenom, mutuelle FROM malade WHERE mutuelle LIKE 'MN%' IN SELECT no_chambre, lit, code_service FROM hospitalisation WHERE code_service='REA'"); //R4
+     maconnexion.ajouterRequete("SELECT code_service, AVG(salaire) FROM infirmier GROUP BY code_service"); //R5
+     maconnexion.ajouterRequete("SELECT code_service, AVG(nb_lits) FROM chambre GROUP BY code_service"); //R6
+     //maconnexion.ajouterRequete("SELECT COUNT(no_docteur) FROM soigne"); //R7
+     maconnexion.ajouterRequete("SELECT code_service, COUNT(DISTINCT numero)/(SELECT COUNT(DISTINCT no_malade) FROM hospitalisation WHERE code_service='CAR') FROM infirmier WHERE code_service='CAR'"); //R8.1 (améliorer pour généraliser à tous les services)
+     maconnexion.ajouterRequete("SELECT code_service, COUNT(DISTINCT numero)/(SELECT COUNT(DISTINCT no_malade) FROM hospitalisation WHERE code_service='CHG') FROM infirmier WHERE code_service='CHG'"); //R8.2
+     maconnexion.ajouterRequete("SELECT code_service, COUNT(DISTINCT numero)/(SELECT COUNT(DISTINCT no_malade) FROM hospitalisation WHERE code_service='REA') FROM infirmier WHERE code_service='REA'"); //R8.3
+     maconnexion.ajouterRequete("SELECT nom, prenom FROM employe WHERE EXISTS (SELECT numero FROM docteur)"); //R9
+     maconnexion.ajouterRequete("SELECT nom, prenom, no_docteur FROM employe, soigne WHERE no_docteur=no_malade IS NULL ");//R10
+//String mutuelle="LMDE"; 
+
+     // String requete ="SELECT nom,prenom FROM MALADE WHERE mutuelle='"+mutuelle+ "'";
+     //maconnexion.ajouterRequete(requete);
+      
+    }
    
     /**
      * Méthode privée qui initialise la liste des requetes de MAJ
