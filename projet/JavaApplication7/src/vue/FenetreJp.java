@@ -43,8 +43,8 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
     private Connexion maconnexion;
     
     private final JLabel tab, req, lignes;
-    private final JLabel nameECE, passwdECE, loginBDD, passwdBDD, nameBDD, nomTab,nomElement, nomSpecialite;
-    private final JTextField  nameECETexte, loginBDDTexte, requeteTexte, nameBDDTexte, selectionTexte,specialiteDocteur;
+    private final JLabel nameECE, passwdECE, loginBDD, passwdBDD, nameBDD, nomTab,nomElement, specialiteDocteur;
+    private final JTextField  nameECETexte, loginBDDTexte, requeteTexte, nameBDDTexte, selectionTexte, selectionSpecialite;
     private final JPasswordField passwdECETexte, passwdBDDTexte;
     private final JButton connect, exec, local;
     private final java.awt.List listeDeTables, listeDeRequetes;
@@ -78,7 +78,6 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         // creation des listes pour les tables et les requetes
         listeDeTables = new java.awt.List(10, false);
         listeDeRequetes = new java.awt.List(10, false);
-        
 //                listeDeRequetesMaj = new java.awt.List(10, false);
 
 
@@ -92,11 +91,12 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         fenetreRes = new JTextArea();
         requeteTexte = new JTextField();
         selectionTexte=new JTextField();
-        specialiteDocteur= new JTextField();
+        selectionSpecialite= new JTextField();
 
         // creation des labels
         nomTab=new JLabel("Nom de la table", JLabel.CENTER);
-      
+                nomElement=new JLabel("Numero du docteur", JLabel.CENTER);
+                specialiteDocteur=new JLabel("Specialite du docteur", JLabel.CENTER );
 
         tab = new JLabel("Tables", JLabel.CENTER);
         lignes = new JLabel("Lignes", JLabel.CENTER);
@@ -106,9 +106,6 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         loginBDD = new JLabel("login base :", JLabel.CENTER);
         passwdBDD = new JLabel("password base :", JLabel.CENTER);
         nameBDD = new JLabel("nom base :", JLabel.CENTER);
-         nomElement=new JLabel("Numero du nouveau docteur", JLabel.CENTER);
-         nomSpecialite= new JLabel("Specialite du nouveau docteur ", JLabel.CENTER);
-
       
         combo1= new JComboBox();
           combo1.setPreferredSize(new Dimension(100, 20));
@@ -159,8 +156,11 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         p2.add(listeDeRequetes);
         p3.add(nomTab);
         p3.add(combo1);
-  
-   
+        p3.add(nomElement);
+        p3.add(selectionTexte);
+     
+        p3.add(specialiteDocteur);
+           p3.add(selectionSpecialite);
         
         p3.add(exec);
 
@@ -227,20 +227,34 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
     /**
      * Méthode privée qui initialise la liste des requetes de MAJ
      */
-   private void remplirRequetesMaj() throws SQLException {
+   private void remplirRequetesMaj() {
         // Requêtes d'insertion
-      //  maconnexion.ajouterRequeteMaj("INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES ('1776' ,'Radiologue');");
-       // maconnexion.executeUpdate("INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES ('176' ,'Radiologue');");
      
 
-        // Requêtes de modification
-       // maconnexion.ajouterRequeteMaj("UPDATE Dept SET loc='Eiffel' WHERE loc='Paris';");
-
-        // Requêtes de suppression
-        //maconnexion.ajouterRequeteMaj("DELETE FROM Dept WHERE loc='Eiffel';");
-
     }
+  
 
+   
+   public void ajouter() throws SQLException   {
+      String requete="INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES ("+selectionTexte.getText()+",'"+selectionSpecialite.getText()+"');";
+       maconnexion.ajouterRequeteMaj(requete);
+       
+         
+        
+            try{
+            maconnexion.executeUpdate(requete);
+            
+            
+            // Requêtes de modification
+            // maconnexion.ajouterRequeteMaj("UPDATE Dept SET loc='Eiffel' WHERE loc='Paris';");
+            
+            // Requêtes de suppression
+            //maconnexion.ajouterRequeteMaj("DELETE FROM Dept WHERE loc='Eiffel';");
+        } catch (SQLException ex) {
+            Logger.getLogger(FenetreJp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                    }
+   
     /**
      *
      * Afficher les tables
@@ -426,66 +440,17 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
                 System.out.println("Connexion echouee : probleme SQL");
                 e.printStackTrace();
             }
-        } else if (combo1.getSelectedItem().toString()=="DOCTEUR") {
-                     
-                            p3.add(nomElement);
-                 p3.add(selectionTexte);
-                 
-              
-                 p3.add(nomSpecialite);
-                            p3.add(specialiteDocteur);
-                p3.setVisible(true);
-               
-
-                    // effacer les listes de tables et de requêtes
-                    listeDeTables.removeAll();
-                    listeDeRequetes.removeAll();
-
-                    // initialisation de la liste des requetes de selection et de MAJ
+        } else if (source == exec) {
             try {
-                remplirRequetesMaj();
+                ajouter();
             } catch (SQLException ex) {
                 Logger.getLogger(FenetreJp.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-                    // afficher la liste de tables et des requetes
-                    afficherTables();
-                    afficherRequetes();
-
-                    // se positionner sur la première table et requête de selection
-                    listeDeTables.select(0);
-                    listeDeRequetes.select(0);
-
-                    // afficher les champs de la table sélectionnée
-                    String nomTable = listeDeTables.getSelectedItem();
-
-                    // recuperer les lignes de la table selectionnee
-                    afficherLignes(nomTable);
-
-                    // recuperer la liste des lignes de la requete selectionnee
-                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-
-
-                   
-
-                    // afficher les résultats de la requete selectionnee
-               
             // effacer les résultats
+            fenetreRes.removeAll();
 
-
-          try  {
-                // afficher les résultats de la requete selectionnee
-                if (afficherRes(requeteSelectionnee) != null) {
-                    maconnexion.ajouterRequete(requeteSelectionnee);
-                    listeDeRequetes.removeAll();
-                    listeDeTables.removeAll();
-                    afficherRequetes();
-                }
-
-            } catch (SQLException ex) {
- listeDeRequetes.removeAll();
-                    listeDeTables.removeAll();
-            }
+          
+            
 
         }
     }
