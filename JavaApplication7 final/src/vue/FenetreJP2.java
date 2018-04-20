@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  *
  * @author segado
  */
-public class FenetreJp extends JFrame implements ActionListener, ItemListener {
+public class FenetreJP2 extends JFrame implements ActionListener, ItemListener {
     /*
      * Attribut privés : objets de Connexion, AWT et Swing
      * 
@@ -42,23 +42,21 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
 
     private Connexion maconnexion;
     
-    private final JLabel tab, req, lignes;
-    private final JLabel nameECE, passwdECE, loginBDD, passwdBDD, nameBDD, nomTab,nomElement, specialiteDocteur;
-    private final JTextField  nameECETexte, loginBDDTexte, requeteTexte, nameBDDTexte, selectionTexte, selectionSpecialite;
+    private final JLabel tab, req, res, lignes;
+    private final JLabel nameECE, passwdECE, loginBDD, passwdBDD, nameBDD, requeteLabel,nomTab,nomElement;
+    private final JTextField nameECETexte, loginBDDTexte, requeteTexte, nameBDDTexte, selectionTexte;
     private final JPasswordField passwdECETexte, passwdBDDTexte;
     private final JButton connect, exec, local;
-    private final java.awt.List listeDeTables, listeDeRequetes;
+    private final java.awt.List listeDeTables, listeDeRequetes, listeDeRequetesMaj;
     private final JTextArea fenetreLignes, fenetreRes;
-    private final JPanel p0, p1, nord, p2, p3;
+    private final JPanel p0, p1, nord, p2, p3;  
     private final JComboBox combo1;
-
-
 
 
     /**
      * Constructeur qui initialise tous les objets graphiques de la fenetre
      */
-    public FenetreJp() throws SQLException, ClassNotFoundException { 
+    public FenetreJP2() throws SQLException, ClassNotFoundException { 
         
 
         // creation par heritage de la fenetre
@@ -78,7 +76,7 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         // creation des listes pour les tables et les requetes
         listeDeTables = new java.awt.List(10, false);
         listeDeRequetes = new java.awt.List(10, false);
-//                listeDeRequetesMaj = new java.awt.List(10, false);
+                listeDeRequetesMaj = new java.awt.List(10, false);
 
 
         // creation des textes
@@ -91,22 +89,21 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         fenetreRes = new JTextArea();
         requeteTexte = new JTextField();
         selectionTexte=new JTextField();
-        selectionSpecialite= new JTextField();
 
         // creation des labels
         nomTab=new JLabel("Nom de la table", JLabel.CENTER);
-                nomElement=new JLabel("Numero du docteur", JLabel.CENTER);
-                specialiteDocteur=new JLabel("Specialite du docteur", JLabel.CENTER );
+                nomElement=new JLabel("A afficher", JLabel.CENTER);
 
         tab = new JLabel("Tables", JLabel.CENTER);
         lignes = new JLabel("Lignes", JLabel.CENTER);
         req = new JLabel("Requetes de sélection", JLabel.CENTER);
+        res = new JLabel("Résultats requête", JLabel.CENTER);
         nameECE = new JLabel("login ECE :", JLabel.CENTER);
         passwdECE = new JLabel("password ECE :", JLabel.CENTER);
         loginBDD = new JLabel("login base :", JLabel.CENTER);
         passwdBDD = new JLabel("password base :", JLabel.CENTER);
         nameBDD = new JLabel("nom base :", JLabel.CENTER);
-      
+        requeteLabel = new JLabel("Entrez votre requete de sélection :", JLabel.CENTER);
         combo1= new JComboBox();
           combo1.setPreferredSize(new Dimension(100, 20));
     combo1.addItem("DOCTEUR");
@@ -148,19 +145,17 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         p1.add(tab);
         p1.add(lignes);
         p1.add(req);
-       
+        p1.add(res);
         nord.add("North", p0);
         nord.add("North", p1);
         p2.add(listeDeTables);
         p2.add(fenetreLignes);
         p2.add(listeDeRequetes);
+        p2.add(fenetreRes);
         p3.add(nomTab);
         p3.add(combo1);
         p3.add(nomElement);
         p3.add(selectionTexte);
-     
-        p3.add(specialiteDocteur);
-           p3.add(selectionSpecialite);
         
         p3.add(exec);
 
@@ -180,6 +175,7 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         tab.setBackground(Color.MAGENTA);
         lignes.setBackground(Color.MAGENTA);
         req.setBackground(Color.MAGENTA);
+        res.setBackground(Color.MAGENTA);
         listeDeTables.setBackground(Color.CYAN);
         fenetreLignes.setBackground(Color.WHITE);
         listeDeRequetes.setBackground(Color.GREEN);
@@ -191,8 +187,6 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         add("Center", p2);
         add("South", p3);
                 setVisible(true);
-
-
 
 
         // pour fermer la fenetre
@@ -224,56 +218,38 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
      * Méthode privée qui initialise la liste des requetes de selection
      */
     public void remplirRequetes() {
-     maconnexion.ajouterRequete("SELECT nom, prenom FROM malade WHERE mutuelle='MAAF';"); //R1
-     maconnexion.ajouterRequete("SELECT nom, prenom FROM employe WHERE numero IN (SELECT numero FROM infirmier WHERE rotation='NUIT')"); //R2
-     maconnexion.ajouterRequete("SELECT service.nom AS serv, batiment, prenom, employe.nom AS noom, specialite FROM service INNER JOIN employe ON service.directeur = employe.numero INNER JOIN docteur ON  docteur.numero = employe.numero"); //R3
-     maconnexion.ajouterRequete("SELECT nom, prenom, mutuelle FROM malade WHERE mutuelle LIKE 'MN%' IN SELECT no_chambre, lit, code_service FROM hospitalisation WHERE code_service='REA'"); //R4
-     maconnexion.ajouterRequete("SELECT code_service, AVG(salaire) FROM infirmier GROUP BY code_service"); //R5
-     maconnexion.ajouterRequete("SELECT code_service, AVG(nb_lits) FROM chambre GROUP BY code_service"); //R6
-     //maconnexion.ajouterRequete("SELECT COUNT(no_docteur) FROM soigne"); //R7
-     maconnexion.ajouterRequete("SELECT code_service, COUNT(DISTINCT numero)/(SELECT COUNT(DISTINCT no_malade) FROM hospitalisation WHERE code_service='CAR') FROM infirmier WHERE code_service='CAR'"); //R8.1 (améliorer pour généraliser à tous les services)
-     maconnexion.ajouterRequete("SELECT code_service, COUNT(DISTINCT numero)/(SELECT COUNT(DISTINCT no_malade) FROM hospitalisation WHERE code_service='CHG') FROM infirmier WHERE code_service='CHG'"); //R8.2
-     maconnexion.ajouterRequete("SELECT code_service, COUNT(DISTINCT numero)/(SELECT COUNT(DISTINCT no_malade) FROM hospitalisation WHERE code_service='REA') FROM infirmier WHERE code_service='REA'"); //R8.3
-     maconnexion.ajouterRequete("SELECT nom, prenom FROM employe WHERE EXISTS (SELECT numero FROM docteur)"); //R9
-     maconnexion.ajouterRequete("SELECT nom, prenom, no_docteur FROM employe, soigne WHERE no_docteur=no_malade IS NULL ");//R10
-//String mutuelle="LMDE"; 
-
-     // String requete ="SELECT nom,prenom FROM MALADE WHERE mutuelle='"+mutuelle+ "'";
-     //maconnexion.ajouterRequete(requete);
-      
+  //      maconnexion.ajouterRequete("SELECT * FROM CHAMBRE;");
+       
+           String mutuelle="LMDE";
+      String requete ="SELECT nom,prenom FROM MALADE WHERE mutuelle='"+mutuelle+ "'";
+       maconnexion.ajouterRequete(requete);
+              maconnexion.ajouterRequeteMaj("INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES (170 ,'Radiologue');");
+       /* maconnexion.ajouterRequete("SELECT Dept.*, Emp.*, Mission.* FROM Dept, Emp, Mission WHERE Dept.deptno=Emp.deptno AND Emp.empno=Mission.empno;");
+        maconnexion.ajouterRequete("SELECT AVG (Emp.sal) FROM Emp, Mission WHERE Emp.empno = Mission.empno;");
+        maconnexion.ajouterRequete("SELECT Dept.*, Emp.* FROM Dept, Emp WHERE Dept.deptno=Emp.deptno AND comm>0;");
+        maconnexion.ajouterRequete("SELECT hiredate, empno, ename FROM Emp WHERE (((hiredate)>='1981-05-01' And (hiredate)<'1981-05-31'))ORDER BY hiredate;");
+        maconnexion.ajouterRequete("SELECT ename, job FROM Emp ORDER BY job;");
+        maconnexion.ajouterRequete("SELECT DISTINCT dname, job FROM Dept, Emp WHERE Dept.deptno=Emp.deptno AND job='Clerk';");*/
     }
-   
+
     /**
      * Méthode privée qui initialise la liste des requetes de MAJ
      */
-   private void remplirRequetesMaj() {
+    private void remplirRequetesMaj() throws SQLException {
         // Requêtes d'insertion
-     
+  //      maconnexion.ajouterRequeteMaj("INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES ('1776' ,'Radiologue');");
+//        maconnexion.executeUpdate("INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES ('176' ,'Radiologue');");
+     //   maconnexion.executeUpdate("INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES ('170' ,'Radiologue');");
+       // maconnexion.ajouterRequeteMaj("INSERT INTO Dept (deptno,dname,loc) VALUES (50,'ECE','Paris');");
+
+        // Requêtes de modification
+       // maconnexion.ajouterRequeteMaj("UPDATE Dept SET loc='Eiffel' WHERE loc='Paris';");
+
+        // Requêtes de suppression
+        //maconnexion.ajouterRequeteMaj("DELETE FROM Dept WHERE loc='Eiffel';");
 
     }
-  
 
-   
-   public void ajouter() throws SQLException   {
-      String requete="INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES ("+selectionTexte.getText()+",'"+selectionSpecialite.getText()+"');";
-       maconnexion.ajouterRequeteMaj(requete);
-       
-         
-        
-            try{
-            maconnexion.executeUpdate(requete);
-            
-            
-            // Requêtes de modification
-            // maconnexion.ajouterRequeteMaj("UPDATE Dept SET loc='Eiffel' WHERE loc='Paris';");
-            
-            // Requêtes de suppression
-            //maconnexion.ajouterRequeteMaj("DELETE FROM Dept WHERE loc='Eiffel';");
-        } catch (SQLException ex) {
-            Logger.getLogger(FenetreJp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-                    }
-   
     /**
      *
      * Afficher les tables
@@ -330,14 +306,21 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         for (String requete : maconnexion.requetes) {
             listeDeRequetes.add(requete);
         }
+      
     }
 
-    /**
-     *
-     * Afficher et retourner les résultats de la requete sélectionnée
-     *
-     * @param requeteSelectionnee
-     */
+  /*  public void executer() throws SQLException
+    {
+        for (String requete: maconnexion.requetesMaj)
+        {
+            listeDeRequetesMaj.add(requete);
+            maconnexion.executeUpdate("INSERT INTO DOCTEUR(NUMERO, SPECIALITE) VALUES ('173' ,'Radiologue');");
+        }
+    }*/
+    
+    
+    
+    
     public ArrayList<String> afficherRes(String requeteSelectionnee) throws SQLException {
         ArrayList<String> liste = null;
         try {
@@ -360,7 +343,22 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
         }
         return liste;
     }
+    
+    
 
+    
+    /**
+     *
+     * Afficher et retourner les résultats de la requete sélectionnée
+     *
+     * @param requeteSelectionnee
+     */
+    
+    
+    
+
+    
+   
     /**
      *
      * Pour gerer les actions sur les boutons on utilise la fonction
@@ -389,11 +387,14 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
 
                     // initialisation de la liste des requetes de selection et de MAJ
                     remplirTables();
+                    remplirRequetes();
                     remplirRequetesMaj();
+                    
 
                     // afficher la liste de tables et des requetes
                     afficherTables();
                     afficherRequetes();
+               //  executer();
 
                     // se positionner sur la première table et requête de selection
                     listeDeTables.select(0);
@@ -430,7 +431,9 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
 
                     // initialisation de la liste des requetes de selection et de MAJ
                     remplirTables();
+                    remplirRequetes();
                     remplirRequetesMaj();
+                    
 
                     // afficher la liste de tables et des requetes
                     afficherTables();
@@ -460,16 +463,20 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
                 e.printStackTrace();
             }
         } else if (source == exec) {
-            try {
-                ajouter();
-            } catch (SQLException ex) {
-                Logger.getLogger(FenetreJp.class.getName()).log(Level.SEVERE, null, ex);
-            }
+      //      String requeteSelectionnee = requeteTexte.getText(); // récupérer le texte de la requête
+String requeteSelectionnee = "Select "+selectionTexte.getText()+" From "+combo1.getSelectedItem().toString()+";";
             // effacer les résultats
             fenetreRes.removeAll();
 
-          
-            
+            try {
+                // afficher les résultats de la requete selectionnee
+                if (afficherRes(requeteSelectionnee) != null) {
+                    maconnexion.ajouterRequete(requeteSelectionnee);
+                    listeDeRequetes.removeAll();
+                    afficherRequetes();
+                }
+            } catch (SQLException ex) {
+            }
 
         }
     }
@@ -478,9 +485,10 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
      *
      * Pour gerer les actions sur items d'une liste on utilise la methode
      * itemStateChanged
+     * @param evt
      */
-    @Override
     @SuppressWarnings("CallToThreadDumpStack")
+    @Override
     public void itemStateChanged(ItemEvent evt) {
         // sélection d'une requete et afficher ses résultats
         if (evt.getSource() == listeDeRequetes) {
@@ -491,7 +499,8 @@ public class FenetreJp extends JFrame implements ActionListener, ItemListener {
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (evt.getSource() == listeDeTables) {
+        } 
+        else if (evt.getSource() == listeDeTables) {
             // afficher les lignes de la table sélectionnée
             String nomTable = listeDeTables.getSelectedItem();
             afficherLignes(nomTable);
